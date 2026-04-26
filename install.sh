@@ -149,12 +149,20 @@ configure_env() {
   if [[ -z "$key" ]]; then
     if [[ -t 0 ]]; then
       echo ""
-      echo -e "${YELLOW}  Clé API Albert (optionnelle — laisser vide pour tester sans IA)${NC}"
+      echo -e "${YELLOW}  Clé API Albert${NC} ${DIM}(optionnelle — Entrée pour ignorer)${NC}"
       echo -e "  ${DIM}Obtenez une clé gratuite sur https://albert.api.etalab.gouv.fr${NC}"
-      read -r -p "  ALBERT_API_KEY > " key
+      read -r -s -p "  ALBERT_API_KEY (masquée) > " key
+      echo ""   # saut de ligne après saisie silencieuse
+      if [[ -n "$key" ]]; then
+        echo -e "  ${GREEN}✓${NC}  Clé saisie : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
+      else
+        warn "Aucune clé saisie — l'IA sera désactivée (configurable dans .env.local)"
+      fi
     else
-      warn "ALBERT_API_KEY non définie — l'IA sera désactivée. Définissez-la plus tard dans .env.local"
+      warn "ALBERT_API_KEY non définie — l'IA sera désactivée. Définissez-la dans .env.local"
     fi
+  else
+    echo -e "  ${GREEN}✓${NC}  Clé détectée depuis l'environnement : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
   fi
 
   # Écriture du fichier
@@ -246,8 +254,12 @@ run_docker() {
 
   if [[ -z "$key" && -t 0 ]]; then
     echo ""
-    echo -e "${YELLOW}  Clé API Albert (laisser vide pour désactiver l'IA) :${NC}"
-    read -r -p "  ALBERT_API_KEY > " key
+    echo -e "${YELLOW}  Clé API Albert${NC} ${DIM}(laisser vide pour désactiver l'IA)${NC}"
+    read -r -s -p "  ALBERT_API_KEY (masquée) > " key
+    echo ""
+    if [[ -n "$key" ]]; then
+      echo -e "  ${GREEN}✓${NC}  Clé saisie : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
+    fi
   fi
 
   info "Build de l'image Docker…"
