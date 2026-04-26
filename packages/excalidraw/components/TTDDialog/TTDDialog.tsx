@@ -6,6 +6,7 @@ import { useApp } from "../App";
 import { Dialog } from "../Dialog";
 import { withInternalFallback } from "../hoc/withInternalFallback";
 
+import LaTeXToExcalidraw from "./LaTeXToExcalidraw";
 import MermaidToExcalidraw from "./MermaidToExcalidraw";
 import TextToDiagram from "./TextToDiagram";
 import TTDDialogTabs from "./TTDDialogTabs";
@@ -53,7 +54,7 @@ const TTDDialogBase = withInternalFallback(
     tab,
     ...rest
   }: {
-    tab: "text-to-diagram" | "mermaid";
+    tab: "text-to-diagram" | "mermaid" | "latex";
   } & (
     | {
         onTextSubmit(
@@ -108,6 +109,9 @@ const TTDDialogBase = withInternalFallback(
               <TTDDialogTabTrigger tab="mermaid">
                 {t("mermaid.label")}
               </TTDDialogTabTrigger>
+              <TTDDialogTabTrigger tab="latex">
+                {t("latex.label")}
+              </TTDDialogTabTrigger>
             </TTDDialogTabTriggers>
           )}
 
@@ -127,6 +131,9 @@ const TTDDialogBase = withInternalFallback(
               mermaidToExcalidrawLib={mermaidToExcalidrawLib}
               isActive={tab === "mermaid"}
             />
+          </TTDDialogTab>
+          <TTDDialogTab className="ttd-dialog-content" tab="latex">
+            <LaTeXToExcalidraw />
           </TTDDialogTab>
         </TTDDialogTabs>
       </Dialog>

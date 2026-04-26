@@ -734,5 +734,56 @@
     "spacebar": "Space",
     "delete": "Delete",
     "mmb": "Scroll wheel"
+  },
+  "latex": {
+    "label": "LaTeX",
+    "title": "LaTeX to Excalidraw",
+    "description": "Render a LaTeX mathematical expression and insert it into your canvas.",
+    "inputPlaceholder": "Write a LaTeX expression here…",
+    "button": "Insert",
+    "autoFixAvailable": "Try auto-fix",
+    "aiGenerate": "Generate with AI",
+    "aiPlaceholder": "Describe the formula… e.g. Riemann integral",
+    "errors": {
+      "parseError": "LaTeX syntax error",
+      "renderError": "Failed to render formula",
+      "insertError": "Failed to insert into canvas"
+    },
+    "examples": {
+      "integral": "Integral",
+      "euler": "Euler",
+      "quadratic": "Quadratic",
+      "series": "Series",
+      "matrix": "Matrix",
+      "fourier": "Fourier"
+    },
+    "displayMode": "Display mode (large centered formula)",
+    "inlineMode": "Inline mode"
+  },
+  "aiAssistant": {
+    "title": "AI Assistant",
+    "subtitle": "Generate diagrams, LaTeX formulas, or get help with your canvas.",
+    "modes": {
+      "assistant": "General assistant",
+      "diagram": "Mermaid diagram",
+      "latex": "LaTeX formula"
+    },
+    "quickActions": "Quick actions",
+    "clearChat": "Clear",
+    "configureApiKey": "Configure VITE_APP_ALBERT_API_KEY to enable AI features.",
+    "contextHint": "Canvas context is automatically included",
+    "insertDiagram": "↗ Insert diagram",
+    "copyLatex": "∑ Copy LaTeX",
+    "copy": "Copy",
+    "welcome": "Describe a diagram, a formula, or ask a question about your canvas.",
+    "placeholder": {
+      "assistant": "Ask a question or request help…",
+      "diagram": "Describe your diagram… (Enter to send)",
+      "latex": "Describe the formula… e.g. Riemann integral"
+    },
+    "generating": "Generating…",
+    "stop": "Stop generation",
+    "inserted": "Diagram inserted!",
+    "copied": "Copied!"
   }
 }

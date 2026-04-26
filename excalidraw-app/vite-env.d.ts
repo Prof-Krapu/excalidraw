@@ -15,6 +15,11 @@ interface ImportMetaEnv {
   VITE_APP_PORTAL_URL: string;
   VITE_APP_AI_BACKEND: string;
 
+  // Albert API (French public AI – OpenAI-compatible, https://albert.api.etalab.gouv.fr)
+  VITE_APP_ALBERT_API_KEY: string;
+  VITE_APP_ALBERT_API_BASE: string;
+  VITE_APP_ALBERT_MODEL: string;
+
   VITE_APP_FIREBASE_CONFIG: string;
 
   // whether to disable live reload / HMR. Usuaully what you want to do when
