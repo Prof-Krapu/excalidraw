@@ -182,6 +182,9 @@ VITE_APP_ALBERT_MODEL=${model}
 # Port du serveur de développement
 VITE_APP_PORT=${port}
 
+# Écoute sur toutes les interfaces réseau (Tailscale, LAN, etc.)
+VITE_APP_HOST=0.0.0.0
+
 # Désactiver le dialogue de prévention de déchargement en dev
 VITE_APP_DISABLE_PREVENT_UNLOAD=true
 EOF
@@ -221,6 +224,7 @@ run_dev() {
   echo -e "${GREEN}${BOLD}  Application prête à démarrer !${NC}"
   hr
   echo -e "  ${BOLD}URL locale :${NC}       http://localhost:${port}"
+  echo -e "  ${BOLD}URL réseau :${NC}       http://$(hostname -I 2>/dev/null | awk '{print $1}' || echo "0.0.0.0"):${port}"
   echo -e "  ${BOLD}Arrêt :${NC}            Ctrl+C"
   echo ""
   echo -e "  ${CYAN}Fonctionnalités IA activées :${NC}"
