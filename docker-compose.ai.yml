@@ -1,0 +1,35 @@
+# docker-compose.ai.yml — Excalidraw + Albert AI
+# Usage: docker compose -f docker-compose.ai.yml up
+#
+# Variables d'environnement à définir (dans .env ou en CLI) :
+#   ALBERT_API_KEY=<votre_clé>
+#   ALBERT_API_BASE=https://albert.api.etalab.gouv.fr/v1  (défaut)
+#   ALBERT_MODEL=AgentPublic/llama3-instruct-8b           (défaut)
+#   HOST_PORT=3000                                         (défaut)
+
+services:
+  excalidraw:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+        VITE_APP_ALBERT_API_KEY: ${ALBERT_API_KEY:-}
+        VITE_APP_ALBERT_API_BASE: ${ALBERT_API_BASE:-https://albert.api.etalab.gouv.fr/v1}
+        VITE_APP_ALBERT_MODEL: ${ALBERT_MODEL:-AgentPublic/llama3-instruct-8b}
+        # Activer l'ancienne interface de génération en bonus
+        VITE_APP_AI_BACKEND: ""
+    image: excalidraw-ai:latest
+    container_name: excalidraw-ai
+    ports:
+      - "${HOST_PORT:-3000}:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.excalidraw.rule=Host(`excalidraw.localhost`)"
