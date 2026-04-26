@@ -10,7 +10,9 @@ let fontCSSLoading: Promise<string> | null = null;
 
 async function fetchAsDataURI(url: string): Promise<string> {
   try {
-    const absUrl = url.startsWith("data:") ? url : new URL(url, location.href).href;
+    const absUrl = url.startsWith("data:")
+      ? url
+      : new URL(url, location.href).href;
     const res = await fetch(absUrl);
     const blob = await res.blob();
     return new Promise((resolve, reject) => {
@@ -69,7 +71,7 @@ async function buildInlinedKaTeXCSS(): Promise<string> {
     allFontFace = allFontFace.replace(new RegExp(escaped, "g"), dataURI);
   }
 
-  return allFontFace + "\n" + otherRules.join("\n");
+  return `${allFontFace}\n${otherRules.join("\n")}`;
 }
 
 function getKaTeXCSS(): Promise<string> {
@@ -110,7 +112,9 @@ export async function renderLatexToImage(
   await document.fonts.ready;
   const measure = document.createElement("div");
   const padding = displayMode ? 16 : 8;
-  measure.style.cssText = `position:fixed;left:-99999px;top:-99999px;padding:${padding}px;font-size:${displayMode ? 22 : 16}px;`;
+  measure.style.cssText = `position:fixed;left:-99999px;top:-99999px;padding:${padding}px;font-size:${
+    displayMode ? 22 : 16
+  }px;`;
   measure.innerHTML = html;
   document.body.appendChild(measure);
   await new Promise((r) => requestAnimationFrame(r));
@@ -134,9 +138,13 @@ export async function renderLatexToImage(
     </style>
   </defs>
   <rect width="${svgWidth}" height="${svgHeight}" fill="${bgColor}"/>
-  <foreignObject x="${padding}" y="${padding}" width="${svgWidth - padding * 2}" height="${svgHeight - padding * 2}">
+  <foreignObject x="${padding}" y="${padding}" width="${
+    svgWidth - padding * 2
+  }" height="${svgHeight - padding * 2}">
     <body xmlns="http://www.w3.org/1999/xhtml"
-          style="margin:0;padding:0;background:transparent;color:${fgColor};font-size:${displayMode ? 22 : 16}px;">
+          style="margin:0;padding:0;background:transparent;color:${fgColor};font-size:${
+    displayMode ? 22 : 16
+  }px;">
       ${html}
     </body>
   </foreignObject>

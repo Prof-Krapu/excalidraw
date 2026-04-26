@@ -47,8 +47,7 @@ function getApiConfig() {
       "https://albert.api.etalab.gouv.fr/v1",
     apiKey: import.meta.env.VITE_APP_ALBERT_API_KEY || "",
     model:
-      import.meta.env.VITE_APP_ALBERT_MODEL ||
-      "AgentPublic/llama3-instruct-8b",
+      import.meta.env.VITE_APP_ALBERT_MODEL || "AgentPublic/llama3-instruct-8b",
   };
 }
 
@@ -238,8 +237,12 @@ export async function albertFetch(options: {
   customSystemPrompt?: string;
   signal?: AbortSignal;
 }): Promise<string> {
-  const { messages, taskType = "assistant", customSystemPrompt, signal } =
-    options;
+  const {
+    messages,
+    taskType = "assistant",
+    customSystemPrompt,
+    signal,
+  } = options;
   const { apiBase, apiKey, model } = getApiConfig();
 
   const systemPrompt = getSystemPrompt(taskType, customSystemPrompt);

@@ -9,15 +9,15 @@ import {
 import { getDataURL } from "@excalidraw/excalidraw/data/blob";
 import { safelyParseJSON } from "@excalidraw/common";
 
-import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
-
 import { albertStreamFetch } from "@excalidraw/excalidraw/components/TTDDialog/utils/albertApi";
+
+import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
 
 import { TTDIndexedDBAdapter } from "../data/TTDStorage";
 
 /** Returns true if the Albert API is configured for direct use */
 function isAlbertConfigured(): boolean {
-  return !!(import.meta.env.VITE_APP_ALBERT_API_KEY);
+  return !!import.meta.env.VITE_APP_ALBERT_API_KEY;
 }
 
 /** Returns true if the legacy Excalidraw AI backend is configured */
@@ -55,7 +55,9 @@ export const AIComponents = ({
           // Prefer legacy backend if configured; otherwise use Albert API
           if (isLegacyBackendConfigured()) {
             const response = await fetch(
-              `${import.meta.env.VITE_APP_AI_BACKEND}/v1/ai/diagram-to-code/generate`,
+              `${
+                import.meta.env.VITE_APP_AI_BACKEND
+              }/v1/ai/diagram-to-code/generate`,
               {
                 method: "POST",
                 headers: {
@@ -122,11 +124,16 @@ export const AIComponents = ({
 
             const content = result.generatedResponse || "";
             // Extract HTML if wrapped in code block
-            const htmlMatch = content.match(/```html\s*([\s\S]+?)```/) ||
+            const htmlMatch =
+              content.match(/```html\s*([\s\S]+?)```/) ||
               content.match(/(<html[\s\S]+<\/html>)/i);
-            const html = htmlMatch ? (htmlMatch[1] || htmlMatch[0]) : content;
+            const html = htmlMatch ? htmlMatch[1] || htmlMatch[0] : content;
 
-            return { html: html || `<html><body style="padding:20px;font-family:sans-serif"><p>Génération IA: ${textSummary}</p></body></html>` };
+            return {
+              html:
+                html ||
+                `<html><body style="padding:20px;font-family:sans-serif"><p>Génération IA: ${textSummary}</p></body></html>`,
+            };
           }
 
           // No backend configured
@@ -159,7 +166,9 @@ export const AIComponents = ({
 
           // Legacy Excalidraw AI backend
           const result = await TTDStreamFetch({
-            url: `${import.meta.env.VITE_APP_AI_BACKEND}/v1/ai/text-to-diagram/chat-streaming`,
+            url: `${
+              import.meta.env.VITE_APP_AI_BACKEND
+            }/v1/ai/text-to-diagram/chat-streaming`,
             messages,
             onChunk,
             onStreamCreated,

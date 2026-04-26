@@ -4,9 +4,9 @@ import { isMaybeMermaidDefinition } from "@excalidraw/excalidraw/mermaid";
 import { useUIAppState } from "@excalidraw/excalidraw/context/ui-appState";
 import { getTextFromElements } from "@excalidraw/excalidraw";
 
-import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
-
 import { albertStreamFetch } from "@excalidraw/excalidraw/components/TTDDialog/utils/albertApi";
+
+import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
 
 import "./AIAssistantPanel.scss";
 
@@ -34,19 +34,22 @@ const QUICK_ACTIONS: Array<{
   {
     icon: "🔄",
     label: "Flowchart simple",
-    prompt: "Génère un flowchart Mermaid simple pour un processus de connexion utilisateur (login, validation, accès)",
+    prompt:
+      "Génère un flowchart Mermaid simple pour un processus de connexion utilisateur (login, validation, accès)",
     mode: "diagram",
   },
   {
     icon: "📊",
     label: "Séquence API",
-    prompt: "Génère un diagramme de séquence Mermaid pour une API REST : client → serveur → base de données",
+    prompt:
+      "Génère un diagramme de séquence Mermaid pour une API REST : client → serveur → base de données",
     mode: "diagram",
   },
   {
     icon: "🗺️",
     label: "Mindmap",
-    prompt: "Génère un mindmap Mermaid sur les bonnes pratiques de développement logiciel",
+    prompt:
+      "Génère un mindmap Mermaid sur les bonnes pratiques de développement logiciel",
     mode: "diagram",
   },
   {
@@ -102,7 +105,8 @@ interface Props {
 
 export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
   const { openSidebar } = useUIAppState();
-  const isVisible = openSidebar?.name === "default" && openSidebar?.tab === "ai";
+  const isVisible =
+    openSidebar?.name === "default" && openSidebar?.tab === "ai";
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -112,7 +116,7 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const hasApiKey = !!(import.meta.env.VITE_APP_ALBERT_API_KEY);
+  const hasApiKey = !!import.meta.env.VITE_APP_ALBERT_API_KEY;
 
   // Auto-scroll to latest message
   useEffect(() => {
@@ -135,13 +139,20 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
     setIsGenerating(false);
   }, []);
 
-  const openLatexTab = useCallback((latex: string) => {
-    // Copy latex to clipboard as fallback
-    try {
-      navigator.clipboard.writeText(latex);
-    } catch { /* ignore */ }
-    excalidrawAPI.setToast({ message: "LaTeX copié dans le presse-papier !" });
-  }, [excalidrawAPI]);
+  const openLatexTab = useCallback(
+    (latex: string) => {
+      // Copy latex to clipboard as fallback
+      try {
+        navigator.clipboard.writeText(latex);
+      } catch {
+        /* ignore */
+      }
+      excalidrawAPI.setToast({
+        message: "LaTeX copié dans le presse-papier !",
+      });
+    },
+    [excalidrawAPI],
+  );
 
   const insertMermaid = useCallback(
     async (mermaidCode: string) => {
@@ -189,7 +200,10 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
         const elements = excalidrawAPI.getSceneElements();
         const textContent = getTextFromElements(elements as any);
         if (textContent) {
-          contextualContent = `Contexte du canvas (textes des éléments): "${textContent.slice(0, 400)}"\n\nQuestion: ${trimmed}`;
+          contextualContent = `Contexte du canvas (textes des éléments): "${textContent.slice(
+            0,
+            400,
+          )}"\n\nQuestion: ${trimmed}`;
         }
       }
 
@@ -221,18 +235,13 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
 
       try {
         const result = await albertStreamFetch({
-          messages: [
-            ...history,
-            { role: "user", content: contextualContent },
-          ],
+          messages: [...history, { role: "user", content: contextualContent }],
           taskType: effectiveMode,
           onChunk: (chunk) => {
             accumulated += chunk;
             setMessages((prev) =>
               prev.map((m) =>
-                m.id === assistantMsg.id
-                  ? { ...m, content: accumulated }
-                  : m,
+                m.id === assistantMsg.id ? { ...m, content: accumulated } : m,
               ),
             );
           },
@@ -313,7 +322,8 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
           <span className="ai-badge">Albert</span>
         </div>
         <div className="ai-assistant__subtitle">
-          Générez des diagrammes, formules LaTeX ou obtenez de l'aide sur votre canvas.
+          Générez des diagrammes, formules LaTeX ou obtenez de l'aide sur votre
+          canvas.
         </div>
       </div>
 
@@ -359,7 +369,9 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
       {/* Quick actions */}
       {messages.length === 0 && (
         <div className="ai-assistant__quick-actions">
-          <div className="ai-assistant__quick-actions-label">Actions rapides</div>
+          <div className="ai-assistant__quick-actions-label">
+            Actions rapides
+          </div>
           <div className="ai-assistant__quick-actions-grid">
             {QUICK_ACTIONS.map((action) => (
               <button
@@ -385,7 +397,8 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
         {messages.length === 0 && (
           <div className="ai-assistant__welcome">
             <span className="icon">✦</span>
-            Décrivez un diagramme, une formule ou posez une question sur votre canvas.
+            Décrivez un diagramme, une formule ou posez une question sur votre
+            canvas.
           </div>
         )}
 
@@ -435,7 +448,8 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
                     type="button"
                     className="ai-assistant__msg-action-btn"
                     onClick={() => {
-                      const code = msg.mermaidCode || msg.latexCode || msg.content;
+                      const code =
+                        msg.mermaidCode || msg.latexCode || msg.content;
                       navigator.clipboard.writeText(code).catch(() => {});
                       excalidrawAPI.setToast({ message: "Copié !" });
                     }}
@@ -494,7 +508,12 @@ export const AIAssistantPanel = ({ excalidrawAPI }: Props) => {
               disabled={!input.trim()}
               title="Envoyer (Entrée)"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
                 <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" />
               </svg>
             </button>

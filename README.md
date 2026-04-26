@@ -45,7 +45,7 @@
 [Albert](https://albert.api.etalab.gouv.fr) est le service d'IA du gouvernement français (Étalab), compatible avec le format OpenAI. Ce fork s'y connecte directement depuis le navigateur, sans backend intermédiaire.
 
 | Fonctionnalité | Description |
-|---|---|
+| --- | --- |
 | **Texte → Diagramme** | Décrivez un diagramme en français, l'IA génère le Mermaid |
 | **Formule LaTeX** | Décrivez une formule, l'IA génère le code KaTeX |
 | **Assistant contextuel** | L'IA analyse le contenu de votre canvas et répond à vos questions |
@@ -77,7 +77,7 @@ Nouvel onglet **⭐** dans la barre latérale :
 - **3 modes** : Assistant général · Diagramme Mermaid · Formule LaTeX
 - **Contextuel** : injecte automatiquement le texte du canvas
 - **6 actions rapides** : flowchart, séquence API, mindmap, intégrales…
-- Boutons d'action intégrés : *↗ Insérer le diagramme*, *∑ Copier LaTeX*
+- Boutons d'action intégrés : _↗ Insérer le diagramme_, _∑ Copier LaTeX_
 - Historique multi-tours (6 derniers messages)
 - Bouton **Stop** pour interrompre la génération
 
@@ -93,14 +93,13 @@ Nouvel onglet **⭐** dans la barre latérale :
 
 ### Prérequis
 
-| Outil | Version minimale |
-|---|---|
-| Node.js | ≥ 18 |
-| Yarn | ≥ 1.22 |
-| Git | toute version récente |
+| Outil   | Version minimale      |
+| ------- | --------------------- |
+| Node.js | ≥ 18                  |
+| Yarn    | ≥ 1.22                |
+| Git     | toute version récente |
 
-> **Clé API Albert (optionnelle)** — Sans clé, l'application fonctionne normalement mais les fonctions IA sont désactivées.
-> Obtenez une clé gratuite sur [albert.api.etalab.gouv.fr](https://albert.api.etalab.gouv.fr).
+> **Clé API Albert (optionnelle)** — Sans clé, l'application fonctionne normalement mais les fonctions IA sont désactivées. Obtenez une clé gratuite sur [albert.api.etalab.gouv.fr](https://albert.api.etalab.gouv.fr).
 
 ---
 
@@ -126,6 +125,7 @@ ALBERT_API_KEY=votre_clé bash install.sh dev
 ```
 
 Le script s'occupe de tout :
+
 1. Vérifie les prérequis (Node, Yarn, Git)
 2. Installe les dépendances
 3. Crée `.env.local` (saisie de la clé API **masquée**)

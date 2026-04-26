@@ -61,9 +61,7 @@ export const AppSidebar = ({ excalidrawAPI }: AppSidebarProps) => {
 
       {/* AI Assistant tab */}
       <Sidebar.Tab tab="ai" style={{ padding: 0, overflow: "hidden" }}>
-        {excalidrawAPI && (
-          <AIAssistantPanel excalidrawAPI={excalidrawAPI} />
-        )}
+        {excalidrawAPI && <AIAssistantPanel excalidrawAPI={excalidrawAPI} />}
       </Sidebar.Tab>
 
       <Sidebar.Tab tab="comments">

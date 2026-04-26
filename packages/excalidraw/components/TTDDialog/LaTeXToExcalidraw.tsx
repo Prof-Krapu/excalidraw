@@ -24,12 +24,21 @@ import "./LaTeXToExcalidraw.scss";
 import type { BinaryFileData, BinaryFiles } from "../../types";
 
 const LATEX_EXAMPLES = [
-  { label: "Intégrale", code: "\\int_0^\\infty e^{-x^2}\\,dx = \\frac{\\sqrt{\\pi}}{2}" },
+  {
+    label: "Intégrale",
+    code: "\\int_0^\\infty e^{-x^2}\\,dx = \\frac{\\sqrt{\\pi}}{2}",
+  },
   { label: "Euler", code: "e^{i\\pi} + 1 = 0" },
   { label: "Quadratique", code: "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}" },
   { label: "Série", code: "\\sum_{n=0}^{\\infty} \\frac{x^n}{n!} = e^x" },
-  { label: "Matrice", code: "\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}" },
-  { label: "Fourier", code: "\\hat{f}(\\xi) = \\int_{-\\infty}^{\\infty} f(x)e^{-2\\pi i x\\xi}\\,dx" },
+  {
+    label: "Matrice",
+    code: "\\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}",
+  },
+  {
+    label: "Fourier",
+    code: "\\hat{f}(\\xi) = \\int_{-\\infty}^{\\infty} f(x)e^{-2\\pi i x\\xi}\\,dx",
+  },
 ];
 
 const LaTeXToExcalidraw = () => {
