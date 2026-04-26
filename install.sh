@@ -145,24 +145,29 @@ configure_env() {
   local base="${ALBERT_BASE_URL:-https://albert.api.etalab.gouv.fr/v1}"
   local port="${PORT:-3001}"
 
-  # Demander la clé si non fournie et si interactif
-  if [[ -z "$key" ]]; then
-    if [[ -t 0 ]]; then
-      echo ""
-      echo -e "${YELLOW}  Clé API Albert${NC} ${DIM}(optionnelle — Entrée pour ignorer)${NC}"
-      echo -e "  ${DIM}Obtenez une clé gratuite sur https://albert.api.etalab.gouv.fr${NC}"
-      read -r -s -p "  ALBERT_API_KEY (masquée) > " key
-      echo ""   # saut de ligne après saisie silencieuse
-      if [[ -n "$key" ]]; then
-        echo -e "  ${GREEN}✓${NC}  Clé saisie : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
-      else
-        warn "Aucune clé saisie — l'IA sera désactivée (configurable dans .env.local)"
-      fi
-    else
-      warn "ALBERT_API_KEY non définie — l'IA sera désactivée. Définissez-la dans .env.local"
-    fi
-  else
+  if [[ -n "$key" ]]; then
+    # Clé déjà fournie via variable d'environnement
     echo -e "  ${GREEN}✓${NC}  Clé détectée depuis l'environnement : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
+  else
+    # Toujours demander la clé interactivement — forcer /dev/tty pour bypasser les pipes
+    echo ""
+    echo -e "${CYAN}${BOLD}  Clé API Albert${NC}"
+    echo -e "  ┌─────────────────────────────────────────────────────────┐"
+    echo -e "  │  Obtenez une clé gratuite sur :                         │"
+    echo -e "  │  ${BOLD}https://albert.api.etalab.gouv.fr${NC}                      │"
+    echo -e "  │                                                          │"
+    echo -e "  │  Collez votre clé puis appuyez sur ${BOLD}Entrée${NC}.             │"
+    echo -e "  │  ${DIM}(laissez vide + Entrée pour continuer sans IA)${NC}         │"
+    echo -e "  └─────────────────────────────────────────────────────────┘"
+    echo ""
+    # Lire depuis /dev/tty pour fonctionner même si stdin est un pipe
+    read -r -s -p "  → Clé API (masquée) : " key < /dev/tty
+    echo ""
+    if [[ -n "$key" ]]; then
+      echo -e "  ${GREEN}✓${NC}  Clé enregistrée : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
+    else
+      warn "Aucune clé saisie — l'IA sera désactivée. Modifiez .env.local pour l'activer."
+    fi
   fi
 
   # Écriture du fichier
@@ -252,13 +257,20 @@ run_docker() {
   local model="${ALBERT_MODEL:-AgentPublic/llama3-instruct-8b}"
   local base="${ALBERT_BASE_URL:-https://albert.api.etalab.gouv.fr/v1}"
 
-  if [[ -z "$key" && -t 0 ]]; then
+  if [[ -z "$key" ]]; then
     echo ""
-    echo -e "${YELLOW}  Clé API Albert${NC} ${DIM}(laisser vide pour désactiver l'IA)${NC}"
-    read -r -s -p "  ALBERT_API_KEY (masquée) > " key
+    echo -e "${CYAN}${BOLD}  Clé API Albert${NC}"
+    echo -e "  ┌─────────────────────────────────────────────────────────┐"
+    echo -e "  │  Collez votre clé puis appuyez sur ${BOLD}Entrée${NC}.             │"
+    echo -e "  │  ${DIM}(laissez vide + Entrée pour continuer sans IA)${NC}         │"
+    echo -e "  └─────────────────────────────────────────────────────────┘"
+    echo ""
+    read -r -s -p "  → Clé API (masquée) : " key < /dev/tty
     echo ""
     if [[ -n "$key" ]]; then
-      echo -e "  ${GREEN}✓${NC}  Clé saisie : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
+      echo -e "  ${GREEN}✓${NC}  Clé enregistrée : ${DIM}${key:0:4}…$(printf '%0.s*' {1..8})${NC}"
+    else
+      warn "Sans clé — l'IA sera désactivée dans ce build Docker."
     fi
   fi
 
